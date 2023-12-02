@@ -2,9 +2,14 @@
 # sheet pages automatically
 
 from pdfOpeningCode import *
+from soundAnalysingCode import *
 
-myFile = ChooseFile()
-pngs, pngNames = ProcessFile(myFile)
-OpenFile(pngs, pngNames)
-# Presenting my work:
+
+a = ChooseSoundToPlay()
+PlotSound(a)
+GetHarmonies(a)
+
+#myFile = ChooseFile()
+#pngs, pngNames = ProcessFile(myFile)
+#OpenFile(pngs, pngNames)
 

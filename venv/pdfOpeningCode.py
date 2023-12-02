@@ -103,10 +103,6 @@ def ProcessFile(sheetPath):
         notes = NoteMark(loadedImage, map, staff, thickness)  # NEED TO: 1. READ C AND B 2. GET MORE QUARTER ONLY SONGS LIKE YONATHAN 3. MOVE ON TO THE NEXT SUBJECT
         print(notes)
 
-        cv2.imwrite('deez.png', loadedImage)
-        cv2.imshow('im', loadedImage)
-        cv2.waitKey(0)
-
         # The above lines painted everything that we don't want as red. So, we just filter out any red pixels:
         loadedImage = cv2.cvtColor(loadedImage, cv2.COLOR_BGR2GRAY)
         _, loadedImage = cv2.threshold(loadedImage, 70, 255, cv2.THRESH_BINARY)
