@@ -23,7 +23,7 @@ def DetectSound():
     while not heard:
         pass
     recording.stop()
-    return adio[0]
+    return adio
 
 def audioCallback(audio, frames, time, status):
     frames = 0.001

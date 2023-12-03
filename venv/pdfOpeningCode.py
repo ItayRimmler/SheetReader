@@ -141,6 +141,7 @@ def OpenFile(loadedImages, imagePaths):
 
         # We close the image only when a sound is made (we need a function that checks whether it's the correct sound, but we don't have that yet):
         inputAudio = DetectSound()  # For now, inputAudio will not be used
+
         cv2.destroyAllWindows()
 
         # Here is the logic to going into the intermediate state:
