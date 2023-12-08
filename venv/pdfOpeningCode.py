@@ -6,10 +6,7 @@ from enum import Enum, auto
 
 import cv2
 import fitz, os
-import numpy as np
-from soundDetectionCode import *
 from pngAnalysingCode import *
-import matplotlib.pyplot as plt
 
 # Flags for later use in multiple functions:
 pageNum = 0
@@ -140,7 +137,7 @@ def OpenFile(loadedImages, imagePaths):
         cv2.waitKey(1)
 
         # We close the image only when a sound is made (we need a function that checks whether it's the correct sound, but we don't have that yet):
-        inputAudio = DetectSound()  # For now, inputAudio will not be used
+        inputAudio = DetectAnySound()  # For now, inputAudio will not be used
 
         cv2.destroyAllWindows()
 
@@ -168,7 +165,7 @@ def IntermediateState(i, loadedImages, imagesPaths):
     cv2.waitKey(1)
 
     # We close the image only when a sound is made (we need a function that checks whether it's the correct sound, but we don't have that yet):
-    inputAudio = DetectSound()  # For now, inputAudio will not be used
+    inputAudio = DetectAnySound()  # For now, inputAudio will not be used
     cv2.destroyAllWindows()
 
     return True

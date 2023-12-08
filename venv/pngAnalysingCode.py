@@ -1,6 +1,4 @@
 # Libraries:
-from enum import Enum, auto
-import cv2
 import numpy as np
 from noteRecognitionCode import InsertNote
 

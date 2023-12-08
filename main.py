@@ -5,46 +5,34 @@
 
 from pdfOpeningCode import *
 from soundAnalysingCode import *
+from soundDetectionCode import DetectPianoSound
 import pickle
 
-#    Experiment 1: Harmony Detection and Comparison
+#    Experiment 1: Trying to Save Harmonies and See If It's a Piano
 
-# We save a database of harmonies of piano notes as dictionaries:
-#HarmoniesDictionary = {}
-#for x in range(2):
-#    temp = ChooseSoundToPlay()
-#    if x == 0:
-#        HarmoniesDictionary['G'] = GetHarmoniesForDataBase(temp)
-#    else:
-#        HarmoniesDictionary['F'] = GetHarmoniesForDataBase(temp)
+# We record a new dictionary:
+#SaveHarmoniesForDataBase()
 
-#with open('HarmoniesDB.npy', 'wb') as file:
-#    pickle.dump(HarmoniesDictionary, file)
-
-# We load the database:
+# Then we load:
 with open('HarmoniesDB.npy', 'rb') as file:
     HarmoniesDictionary = pickle.load(file)
 
-# We get an input audio:
-print("Please record you sound and let's see if it's a piano's G or an F:")
-temp2 = DetectSound()
-mySound = GetHarmoniesOfInput(temp2)
+# We continue recording how many times we want:
+#for i in range(1):
+#    SaveHarmoniesForDataBase(HarmoniesDictionary)
 
-# Let's see it's harmonies:
-print([round(spike, 3) for spike in mySound])
+# Then we check:
+print("Checking whether the next sound you play is a note that was saved:")
+DetectPianoSound(HarmoniesDictionary)
 
-# And let's see if it matches to any of the harmonies in the database:
-print(CompareHarmonies(HarmoniesDictionary, mySound))
-
-
-#    Experiment 2: Note Detection
+#    Experiment 2: Note Detection in Image Domain
 
 # Choosing a file:
-myFile = ChooseFile()
+#myFile = ChooseFile()
 
 # Processing the file:
-pngs, pngNames = ProcessFile(myFile)
+#pngs, pngNames = ProcessFile(myFile)
 
 # Presenting the file:
-OpenFile(pngs, pngNames)
+#OpenFile(pngs, pngNames)
 

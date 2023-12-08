@@ -1,4 +1,3 @@
-from soundDetectionCode import *
 from enum import Enum, auto
 from fileAnalysingCode import RightTraveller, Kernel
 import matplotlib.pyplot as plt
