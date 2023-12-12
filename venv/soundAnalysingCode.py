@@ -88,6 +88,7 @@ def SaveHarmoniesForDataBase(HarmoniesDictionary = None):
     with open('HarmoniesDB.npy', 'wb') as file:
         pickle.dump(HarmoniesDictionary, file)
 
+
 def GetHarmoniesForDataBase(path):
     # First, we read the audio from the wav:
     samplingRate, audio = wavfile.read(path)
@@ -124,6 +125,7 @@ def GetHarmoniesForDataBase(path):
 
     # Else, we return no info:
     return [0, 0, 0]
+
 
 def GetHarmoniesOfInput(audio, plotSpikes = None):
 

@@ -47,7 +47,7 @@ def DetectAnySound():
 
 def audioCallback(audio, frames, time, status):
     frames = 0.001
-    if (audio > 0.2).any():  # You might wanna change that parameter to 0.1... Now it's way to sensitive
+    if (audio > 0.05).any():  # You might wanna change that parameter to 0.1... Now it's way to sensitive
         global heard
         heard = True
         global adio

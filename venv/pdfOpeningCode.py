@@ -7,6 +7,7 @@ from enum import Enum, auto
 import cv2
 import fitz, os
 from pngAnalysingCode import *
+from soundDetectionCode import DetectAnySound
 
 # Flags for later use in multiple functions:
 pageNum = 0
@@ -73,13 +74,13 @@ def ProcessFile(sheetPath):
         sheetPage = sheet.load_page(pageNum)
 
         # Now to turn it into an analysable png, and let us get its name:
-        sheetImage = sheetPage.get_pixmap(matrix=fitz.Matrix(1, 1))  # Here we decide the resolution by the way
+        sheetImage = sheetPage.get_pixmap(matrix=fitz.Matrix(2, 2))  # Here we decide the resolution by the way
         sheetImageName = sheetPath.rstrip('.pdf') + str(pageNum) + '.png'
         sheetImage.save(sheetImageName, 'png')
 
         # And now we read the new png. We stop using fitz and start using OpenCV:
         loadedImage = cv2.imread(sheetImageName)
-
+        print(loadedImage)
         # Sharpening the image, then saving it:
         sharpeningKernel = np.array([[-1, -1, -1],
                                       [-1, 9, -1],
@@ -95,6 +96,7 @@ def ProcessFile(sheetPath):
 
         # Then, we make sure to leave only the notes:
         thickness = LeaveNotes(loadedImage, staff, map)
+        cv2.imwrite(sheetImageNamePainted, loadedImage)
 
         # We then proceed to mark all the notes and classify them:
         notes = NoteMark(loadedImage, map, staff, thickness)  # NEED TO: 1. READ C AND B 2. GET MORE QUARTER ONLY SONGS LIKE YONATHAN 3. MOVE ON TO THE NEXT SUBJECT

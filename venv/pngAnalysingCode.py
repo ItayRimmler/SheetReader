@@ -1,5 +1,6 @@
 # Libraries:
 import numpy as np
+import cv2
 from noteRecognitionCode import InsertNote
 
 # MAIN FUNCTIONS:
@@ -24,19 +25,22 @@ def StaffMark(im):
     # The main loop:
     while continueWalking and not walkingT.looped2Much():
 
-        # k is an iterator that we shall use later:
+        # k is an iterator that we shall use later. points is an array that we will use later:
         k = 0
+        points = []
 
         # We check whether we reached a level 5 staff, and if we did:
         if i == 6:
 
             for point in maybeStaff:  # We create a sixth staff under level 5
-                point[1] -= gap
-                im[tuple(point)] = np.array([0, 0, 255])
-            staffTemp = Staff(coor=maybeStaff, gap=gap)
+                newPoint = np.array([point[0] + gap, point[1]])
+                im[tuple(newPoint)] = np.array([0, 0, 255])
+                points.append(newPoint)
+            points = np.array(points)
+            staffTemp = Staff(coor=points, gap=gap)
 
             # We make sure to update tempGap after using it:
-            tempGap = maybeStaff[0][0]
+            tempGap = staffTemp.coor[0][0]
 
             # We update the .level and .groupNumber fields to the new staff:
             staffTemp + i
@@ -150,7 +154,7 @@ def LeaveNotes(im, staff, map):
         thickness = max(thickness, temp)
 
     # We set our deleting Kernel to be of height of 4 gaps and 5 thicknesses
-    deleter = Kernel(x=int(4 * gapEst + 5 * thickness) + 1, h=4 * gapEst + 5 * thickness, map=map)
+    deleter = Kernel(x=int(5 * gapEst + 6 * thickness) + 1, h=5 * gapEst + 6 * thickness, map=map)
     deleter.paintAllBody([0, 0, 255])
 
     # And, we delete a little bit before and after the notes, and hopefully it worked:
@@ -209,6 +213,7 @@ def NoteMark(im, map, staff, thickness):
             marker.unred()
             for k in range(staf.coor.shape[0]):
 
+
                 # Setting up the parameters:
                 shiftx = marker.whereRU()[0]  # Shift of the x-axis from the (0,0) point
                 shifty = marker.whereRU()[1]  # Shift of the y-axis from the (0,0) point
@@ -221,12 +226,12 @@ def NoteMark(im, map, staff, thickness):
                 rangy = [np.array([x, y]) for x in range(marker.whereRU()[0] - int(marker.h/2), marker.whereRU()[0] + int(marker.h/2)) for y in range(marker.whereRU()[1] - int(marker.w/2), marker.whereRU()[1] + int(marker.w/2)) if A * x ** 2 + B * x * y + C * y ** 2 + D * x + E * y + F < 0.001 and (abs(x - marker.x) > 2 or abs(y - marker.y) > 2)]
 
                 # We're checking whether or not it's black enough, or if it's black with a hole inside:
-                if marker.stainImage(im, isBlackByRange(im, rang, 0.5) or isBlackByRange(im, rangy, 0.4)):
+                if marker.stainImage(im, isBlackByRange(im, rang, 0.8) or isBlackByRange(im, rangy, 0.7)):
                     notes.append([InsertNote(staf.level + 0.5), marker.whereRU()[1], staf.groupNumber])
 
                 # Same check, but if it also has red on it, then we classify it as a note that's on the staff and not in the gap:
-                if marker.stainImage(im, (isBlackByRange(im, rang, 0.5) or isBlackByRange(im, rangy, 0.4)) and isRedByRange(im, rang, 0.001)):
-                    notes.pop()
+                if marker.stainImage(im, (isBlackByRange(im, rang, 0.8) or isBlackByRange(im, rangy, 0.7)) and isRedByRange(im, rang, 0.001)):
+                    notes.pop() #                                 0.5                             0.4
                     notes.append([InsertNote(staf.level), marker.whereRU()[1], staf.groupNumber])
 
                 # Checking the next point above the staff:
@@ -249,7 +254,7 @@ def NoteMark(im, map, staff, thickness):
                 rangy = [np.array([x, y]) for x in range(marker.whereRU()[0] - int(marker.h/2), marker.whereRU()[0] + int(marker.h/2)) for y in range(marker.whereRU()[1] - int(marker.w/2), marker.whereRU()[1] + int(marker.w/2)) if A * x ** 2 + B * x * y + C * y ** 2 + D * x + E * y + F < 0.001 and (abs(x - marker.x) > 2 or abs(y - marker.y) > 2)]
 
                 # We're checking whether or not it's black enough, or if it's black with a hole inside, also if it has red on it:
-                if marker.stainImage(im, (isBlackByRange(im, rang, 0.5) or isBlackByRange(im, rangy, 0.4)) and isRedByRange(im, rang, 0.001)):
+                if marker.stainImage(im, (isBlackByRange(im, rang, 0.8) or isBlackByRange(im, rangy, 0.7)) and isRedByRange(im, rang, 0.001)):
                     notes.append([InsertNote(staf.level), marker.whereRU()[1], staf.groupNumber])
 
                 # Checking the next point on the staff:
